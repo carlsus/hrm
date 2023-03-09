@@ -1,0 +1,37 @@
+SELECT
+	concat( b.first_name, ' ', b.last_name ) AS employee_name,
+	a.date_created AS date_created,
+	a.employee_id AS employee_id,
+	c.position,
+	COALESCE( TIMESTAMPDIFF(MINUTE, in_am, out_am)/60.0 -
+
+    16*(
+        TIMESTAMPDIFF(DAY,    date_created,in_am)-
+        TIMESTAMPDIFF(DAY,    date_created,out_am)
+    ) -
+
+    16*(
+        TIMESTAMPDIFF(WEEK,  date_created,in_am)-
+        TIMESTAMPDIFF(WEEK,   date_created,out_am)
+    ),0) +
+	COALESCE(TIMESTAMPDIFF(MINUTE, in_pm, out_pm)/60.0 -
+
+    16*(
+        TIMESTAMPDIFF(DAY,    date_created,in_pm)-
+        TIMESTAMPDIFF(DAY,    date_created,out_pm)
+    ) -
+
+    16*(
+        TIMESTAMPDIFF(WEEK,  date_created,in_pm)-
+        TIMESTAMPDIFF(WEEK,  date_created,out_pm)
+    ),0)AS total,
+		CASE
+			WHEN b.employment_status = 'Probationary' THEN c.probationary
+
+			ELSE c.regular/8
+		END  as per_hour
+
+FROM
+	time_attendances a
+	JOIN employees b
+	join positions c on c.id=b.position_id
