@@ -81,7 +81,10 @@
                 }
             }
         },
-
+        dom: 'Bfrtip',
+            buttons: [
+                'print'
+        ],
         columnDefs: [
           { width: "35%", targets: 0 },
           { width: "50%", targets: 1 },

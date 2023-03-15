@@ -30,10 +30,10 @@ class EmployeeController extends Controller
     {
         $columns = array(
             0 =>'employee_no',
-            1 =>'crew_name',
-            1 =>'position',
-            1 =>'status',
-            2 =>'application_date',
+            1 =>'employee_name',
+            1 =>'positions',
+            1 =>'employement_status',
+            2 =>'hire_date',
             3 =>'options'
         );
 
@@ -58,8 +58,8 @@ class EmployeeController extends Controller
 
         $output =  Employee::where('first_name', 'LIKE',"%{$search}%")
                     ->orWhere('last_name', 'LIKE',"%{$search}%")
-                    ->orWhere('rank', 'LIKE',"%{$search}%")
-                    ->orWhere('status', 'LIKE',"%{$search}%")
+                    //->orWhere('positions.position', 'LIKE',"%{$search}%")
+                    ->orWhere('employment_status', 'LIKE',"%{$search}%")
                     ->offset($start)
                     ->limit($limit)
                     ->orderBy($order,$dir)
@@ -67,8 +67,8 @@ class EmployeeController extends Controller
 
         $totalFiltered = Employee::where('first_name', 'LIKE',"%{$search}%")
                     ->orWhere('last_name', 'LIKE',"%{$search}%")
-                    ->orWhere('rank', 'LIKE',"%{$search}%")
-                    ->orWhere('status', 'LIKE',"%{$search}%")
+                    //->orWhere('positions.position', 'LIKE',"%{$search}%")
+                    ->orWhere('employment_status', 'LIKE',"%{$search}%")
                     ->count();
         }
 
@@ -88,7 +88,7 @@ class EmployeeController extends Controller
                 $btn='';
                 //if (Auth::user()->hasPermissionTo('crew-management-edit')) //If user has this //permission
                 //{
-                    $btn.= "<a href='".route('employees.edit',$value->id)."' data-toggle='tooltip'  data-id='".$value->id."' title='Show' class='btn btn-default far fa-eye'></a>";
+                    $btn.= "<a href='".route('employees.edit',$value->id)."' data-toggle='tooltip'  data-id='".$value->id."' title='Show' class='btn btn-default far fa-plus'></a>";
                 //}
                 //if (Auth::user()->hasPermissionTo('crew-management-delete')) //If user has this //permission
                 //{

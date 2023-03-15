@@ -41,7 +41,7 @@ class ProjectController extends Controller
        else {
        $search = $request->input('search.value');
 
-       $proj =  Project::where('poroject_name','LIKE',"%{$search}%")
+       $proj =  Project::where('project_name','LIKE',"%{$search}%")
                    ->offset($start)
                    ->limit($limit)
                    ->orderBy($order,$dir)

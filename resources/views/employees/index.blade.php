@@ -12,6 +12,11 @@
           </div>
           <!-- /.card-header -->
           <div class="card-body">
+            <p>
+                <a href="./employees/create" class="btn btn-default">New Employee</a>
+            </p>
+
+
             <table class="table table-bordered table-hover data-table w-100">
               <thead>
               <tr>
@@ -45,10 +50,15 @@
 
     var table;
     $(document).ready(function(e){
+        $('.data-table tfoot th').each( function (i) {
+        var title = $('.data-table thead th').eq( $(this).index() ).text();
+        $(this).html( '<input type="text" placeholder="'+title+'" data-index="'+i+'" />' );
+    } );
       table = $('.data-table').DataTable({
-            destroy:true,
+
             processing: true,
             serverSide: true,
+            searching:true,
             "ajax":{
                      "url": "{{ url('allEmployees') }}",
                      "dataType": "json",
@@ -68,31 +78,39 @@
                 },
                 { "data": "options" }
             ]	,
-
-            dom: "lBtipr",
-                buttons: {
-                  buttons: [
-                    {
-                      text: "New Employee",
-                      action: function(e, dt, node, config) {
-                          location.href='./employees/create';
-                      }
-                    }
-                  ],
-                  dom: {
-                    button: {
-                      tag: "button",
-                      className: "btn btn-default"
-                    },
-                    buttonLiner: {
-                      tag: null
-                    }
-                  }
-                }
+            dom: 'Bfrtip',
+            buttons: [
+                'print'
+            ]
+            // dom: "lBtipr",
+            //     buttons: {
+            //       buttons: [
+            //         {
+            //           text: "New Employee",
+            //           action: function(e, dt, node, config) {
+            //               location.href='./employees/create';
+            //           }
+            //         }
+            //       ],
+            //       dom: {
+            //         button: {
+            //           tag: "button",
+            //           className: "btn btn-default"
+            //         },
+            //         buttonLiner: {
+            //           tag: null
+            //         }
+            //       }
+            //     }
 
         });
 
-
+        $( table.table().container() ).on( 'keyup', 'tfoot input', function () {
+        table
+            .column( $(this).data('index') )
+            .search( this.value )
+            .draw();
+    } );
       //delete
       $('.data-table').on('click', '.delete', function () {
         var id = $(this).attr('data-id');

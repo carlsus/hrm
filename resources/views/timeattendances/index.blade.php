@@ -47,6 +47,7 @@
         processing: true,
         serverSide: true,
         lengthChange: false,
+        searching:true,
         ajax: "{{ route('allTimesAttendanceLog') }}",
         columns: [
             {data: 'employee.first_name', name: 'employee.first_name'},
@@ -92,13 +93,10 @@
           { width: "15%", targets: 4 },
           { width: "15%", targets: 5 }
         ],
-        buttons: [
-            {
-                extend: 'csv',
-                split: [ 'pdf', 'excel'],
-            },
-            'colvis'
-        ]
+        dom: 'Bfrtip',
+            buttons: [
+                'print'
+            ]
     });
 
 
