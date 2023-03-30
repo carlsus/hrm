@@ -14,16 +14,16 @@
           <!-- /.card-header -->
           <div class="card-body">
             <div class="mb-3">
-              @can('roles-create')
+              {{-- @can('roles-create') --}}
               <a class="btn btn-success" href="{{ route('roles.create') }}"> Create New Role</a>
-              @endcan
+              {{-- @endcan --}}
             </div>
             @if ($message = Session::get('success'))
             <div class="alert alert-success">
                 <p>{{ $message }}</p>
             </div>
             @endif
-        
+
         <table class="table table-bordered">
           <tr>
              <th>No</th>
@@ -47,9 +47,9 @@
             </tr>
             @endforeach
         </table>
-        
+
         {!! $roles->render() !!}
-            
+
           </div>
           <!-- /.card-body -->
         </div>

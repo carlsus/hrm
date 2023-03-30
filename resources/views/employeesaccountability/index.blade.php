@@ -45,29 +45,34 @@
         var table = $('.data-table').DataTable({
         processing: true,
         serverSide: true,
+        searching:true,
         ajax: "{{ route('employeeAccountability') }}",
         columns: [
             {data: 'employee', name: 'employee'},
             {data: 'item', name: 'item'},
             {data: 'options', name: 'options', orderable: false, searchable: false}
         ],
-        dom: "lBtipr",
+        dom: "Bfrtip",
             buttons: {
             buttons: [
+                'print',
+                @can('employee-accountability-create')
                 {
                 text: "Create New",
                     action: function(e, dt, node, config) {
                         location.href='./employeeaccountability/create';
                     }
                 }
+                @endcan
             ],
+
             dom: {
                 button: {
-                tag: "button",
-                className: "btn btn-default group-vertical"
+                    tag: "button",
+                    className: "btn btn-default group-vertical"
                 },
-                buttonLiner: {
-                tag: null
+                    buttonLiner: {
+                    tag: null
                 }
             }
         },

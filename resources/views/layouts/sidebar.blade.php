@@ -10,10 +10,9 @@
     <div class="sidebar">
 
       <!-- Sidebar Menu -->
-      <nav class="mt-2">
+        <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-          <!-- Dashboard -->
-
+            <!-- Dashboard -->
             <li class="nav-item">
                 <a href="{{ url('./home') }}" class="nav-link">
                     <i class="nav-icon fas fa-tachometer-alt"></i>
@@ -23,39 +22,43 @@
                 </a>
             </li>
 
+            <!-- Human Resource -->
+            <li class="nav-item has-treeview">
+                <a href="#" class="nav-link">
+                    <i class="far  fas fa-money-check"></i>
+                    <p>
+                    Human Resource
+                    <i class="fas fa-angle-left right"></i>
 
-            @can('employee-list-menu')
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    @can('employee-list')
+                    <li class="nav-item has-treeview" id="manning">
+                        <a href="{{ route('employees.index')}}" class="nav-link">
+                            <i class="far  fa-angle-right nav-icon"></i>
+                            <p>Employee List</p>
+                            </a>
+                    </li>
+                    @endcan
+                    @can('employee-accountability-list')
+                    <li class="nav-item">
+                        <a href="{{ route('employeeaccountability.index') }}" class="nav-link">
+                            <i class="far  fa-angle-right nav-icon"></i>
+                            <p>Accountability</p>
+                        </a>
+                    </li>
+                    @endcan
 
+                    {{-- @endcan --}}
 
+                </ul>
             </li>
-            @endcan
-     <!-- Payroll -->
-     <li class="nav-item has-treeview">
-        <a href="#" class="nav-link">
-            <i class="far  fas fa-money-check"></i>
-            <p>
-            Human Resource
-            <i class="fas fa-angle-left right"></i>
 
-            </p>
-        </a>
-        <ul class="nav nav-treeview">
-            <li class="nav-item has-treeview" id="manning">
-                <a href="{{ route('employees.index')}}" class="nav-link">
-                    <i class="far  fa-angle-right nav-icon"></i>
-                    <p>Employee List</p>
-                    </a>
-            </li>
-            <li class="nav-item">
-            <a href="{{ route('employeeaccountability.index') }}" class="nav-link">
-                <i class="far  fa-angle-right nav-icon"></i>
-                <p>Accountability</p>
-            </a>
-            </li>
-            {{-- @endcan --}}
 
-        </ul>
-    </li>
+
+
+
     <!-- Payroll -->
     <li class="nav-item has-treeview">
         <a href="#" class="nav-link">
@@ -181,7 +184,12 @@
            <p>User Accounts</p>
        </a>
        </li>
-
+       <li class="nav-item">
+        <a href="{{ route('roles.index') }}" class="nav-link">
+            <i class="far  fa-angle-right nav-icon"></i>
+            <p>Roles</p>
+        </a>
+        </li>
        <li class="nav-item">
        <a href="" class="nav-link">
            <i class="far  fa-angle-right nav-icon"></i>

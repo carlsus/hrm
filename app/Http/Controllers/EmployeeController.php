@@ -31,7 +31,7 @@ class EmployeeController extends Controller
         $columns = array(
             0 =>'employee_no',
             1 =>'employee_name',
-            1 =>'positions',
+            1 =>'position',
             1 =>'employement_status',
             2 =>'hire_date',
             3 =>'options'
@@ -58,8 +58,9 @@ class EmployeeController extends Controller
 
         $output =  Employee::where('first_name', 'LIKE',"%{$search}%")
                     ->orWhere('last_name', 'LIKE',"%{$search}%")
-                    //->orWhere('positions.position', 'LIKE',"%{$search}%")
+                    ->orWhere('employee_no', 'LIKE',"%{$search}%")
                     ->orWhere('employment_status', 'LIKE',"%{$search}%")
+                    ->orWhere('hire_date', 'LIKE',"%{$search}%")
                     ->offset($start)
                     ->limit($limit)
                     ->orderBy($order,$dir)
@@ -67,8 +68,10 @@ class EmployeeController extends Controller
 
         $totalFiltered = Employee::where('first_name', 'LIKE',"%{$search}%")
                     ->orWhere('last_name', 'LIKE',"%{$search}%")
+                    ->orWhere('employee_no', 'LIKE',"%{$search}%")
                     //->orWhere('positions.position', 'LIKE',"%{$search}%")
                     ->orWhere('employment_status', 'LIKE',"%{$search}%")
+                    ->orWhere('hire_date', 'LIKE',"%{$search}%")
                     ->count();
         }
 
@@ -77,8 +80,7 @@ class EmployeeController extends Controller
         {
             foreach ($output as $value)
             {
-                // $show =  route('crews.show',$value->id);
-                // $edit =  route('crews.edit',$value->id);
+
 
                 $nestedData['employee_no'] = $value->employee_no;
                 $nestedData['employee_name'] = $value->last_name .', ' . $value->first_name;
@@ -86,21 +88,16 @@ class EmployeeController extends Controller
                 $nestedData['employment_status'] = $value->employment_status;
                 $nestedData['hire_date'] = $value->hire_date;
                 $btn='';
-                //if (Auth::user()->hasPermissionTo('crew-management-edit')) //If user has this //permission
-                //{
+                if (Auth::user()->hasPermissionTo('employee-edit'))
+                {
                     $btn.= "<a href='".route('employees.edit',$value->id)."' data-toggle='tooltip'  data-id='".$value->id."' title='Show' class='btn btn-default far fa-plus'></a>";
-                //}
-                //if (Auth::user()->hasPermissionTo('crew-management-delete')) //If user has this //permission
-                //{
+                }
+                if (Auth::user()->hasPermissionTo('employee-delete'))
+                {
                     $btn.=  "&nbsp; <a href='javascript:void(0)' data-toggle='tooltip'  data-id='".$value->id."' title='Delete' class='btn btn-danger delete fas fa-trash'></a>";
 
-                //}
+                }
                 $nestedData['options']=$btn;
-                // if (Auth::user()->hasPermissionTo('applicant-can-delete')) //If user has this //permission
-                // {
-                //     $nestedData['options'] = "<a href='".route('crews.show',$value->id)."' data-toggle='tooltip'  data-id='".$value->id."' title='Show' class='btn btn-default far fa-eye'></a>
-                //     <a href='javascript:void(0)' data-toggle='tooltip'  data-id='".$value->id."' title='Delete' class='btn btn-danger delete fas fa-trash'></a>";
-                // }
 
                 $data[] = $nestedData;
 

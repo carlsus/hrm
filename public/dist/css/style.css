@@ -4,3 +4,8 @@ btn-group, .btn-group-vertical {
     display: inline-flex;
     vertical-align: middle;
 }
+
+.dataTables_length,.dataTables_filter {
+    margin-left: 10px;
+    float: right;
+}

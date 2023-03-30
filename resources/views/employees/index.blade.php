@@ -12,11 +12,6 @@
           </div>
           <!-- /.card-header -->
           <div class="card-body">
-            <p>
-                <a href="./employees/create" class="btn btn-default">New Employee</a>
-            </p>
-
-
             <table class="table table-bordered table-hover data-table w-100">
               <thead>
               <tr>
@@ -77,41 +72,34 @@
                     }
                 },
                 { "data": "options" }
-            ]	,
-            dom: 'Bfrtip',
+            ],
+            dom: "Bfrtip",
+            buttons: {
             buttons: [
-                'print'
-            ]
-            // dom: "lBtipr",
-            //     buttons: {
-            //       buttons: [
-            //         {
-            //           text: "New Employee",
-            //           action: function(e, dt, node, config) {
-            //               location.href='./employees/create';
-            //           }
-            //         }
-            //       ],
-            //       dom: {
-            //         button: {
-            //           tag: "button",
-            //           className: "btn btn-default"
-            //         },
-            //         buttonLiner: {
-            //           tag: null
-            //         }
-            //       }
-            //     }
+                'print',
+                {
+                    text: "Create New",
+                      action: function(e, dt, node, config) {
+                          location.href='./employees/create';
+                      }
+                }
+            ],
+
+            dom: {
+                button: {
+                tag: "button",
+                className: "btn btn-default group-vertical"
+                },
+                buttonLiner: {
+                tag: null
+                }
+                }
+            },
 
         });
 
-        $( table.table().container() ).on( 'keyup', 'tfoot input', function () {
-        table
-            .column( $(this).data('index') )
-            .search( this.value )
-            .draw();
-    } );
-      //delete
+
+        //delete
       $('.data-table').on('click', '.delete', function () {
         var id = $(this).attr('data-id');
         $confirm = confirm("Are You sure want to delete !");

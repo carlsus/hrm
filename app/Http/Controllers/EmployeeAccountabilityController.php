@@ -7,6 +7,7 @@ use App\Accountability;
 use App\EmployeeAccountability;
 use App\Http\Requests\EmployeeAccountabilityRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class EmployeeAccountabilityController extends Controller
 {
@@ -66,21 +67,14 @@ class EmployeeAccountabilityController extends Controller
                 $nestedData['item'] = $value->accountability->name;
                 $nestedData['employee'] = $value->employee->first_name . ' ' .$value->employee->last_name;
                 $btn='';
-                //if (Auth::user()->hasPermissionTo('crew-management-edit')) //If user has this //permission
-                //{
-                    // $btn.= "<a href='".route('employees.edit',$value->id)."' data-toggle='tooltip'  data-id='".$value->id."' title='Show' class='btn btn-default far fa-eye'></a>";
-                //}
-                //if (Auth::user()->hasPermissionTo('crew-management-delete')) //If user has this //permission
-                //{
+
+                if (Auth::user()->hasPermissionTo('employee-accountability-delete')) //If user has this //permission
+                {
                     $btn.=  "&nbsp; <a href='javascript:void(0)' data-toggle='tooltip'  data-id='".$value->id."' title='Delete' class='btn btn-danger delete fas fa-trash'></a>";
 
-                //}
+                }
                 $nestedData['options']=$btn;
-                // if (Auth::user()->hasPermissionTo('applicant-can-delete')) //If user has this //permission
-                // {
-                //     $nestedData['options'] = "<a href='".route('crews.show',$value->id)."' data-toggle='tooltip'  data-id='".$value->id."' title='Show' class='btn btn-default far fa-eye'></a>
-                //     <a href='javascript:void(0)' data-toggle='tooltip'  data-id='".$value->id."' title='Delete' class='btn btn-danger delete fas fa-trash'></a>";
-                // }
+
 
                 $data[] = $nestedData;
 
