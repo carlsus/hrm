@@ -45,7 +45,7 @@
                     <li class="nav-item">
                         <a href="{{ route('employeeaccountability.index') }}" class="nav-link">
                             <i class="far  fa-angle-right nav-icon"></i>
-                            <p>Employee Management</p>
+                            <p>Equipment Management</p>
                         </a>
                     </li>
                     @endcan

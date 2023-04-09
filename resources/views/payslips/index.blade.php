@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Projects')
+@section('title', 'Payslips')
 
 @section('content')
 <section class="content">
@@ -12,7 +12,7 @@
           </div>
           <!-- /.card-header -->
           <div class="card-body">
-            <div class="form-row align-items-center">
+            {{-- <div class="form-row align-items-center">
                 <div class="col-auto">
 
                   <input type="text" class="form-control date " id="date_start" name="date_start" placeholder="From date">
@@ -25,17 +25,14 @@
                 <div class="col-auto mt-2">
                   <button type="submit" class="btn btn-primary mb-2" id="btnGenerate" name="btnGenerate">Generate</button>
                 </div>
-              </div>
+              </div> --}}
 
 
             <table class="table table-bordered table-hover data-table w-100">
               <thead>
               <tr>
-                <th>Employee Name</th>
-                <th>Deduction</th>
-                <th>Gross</th>
-                <th>Net Pay</th>
-
+                <th>Payroll Period </th>
+                  <th></th>
               </tr>
               </thead>
               <tbody>
@@ -54,7 +51,8 @@
 </section>
 
 @endsection
-@section('scripts')
+
+{{-- @section('scripts')
 
 <script type="text/javascript">
   $(function () {
@@ -64,47 +62,7 @@
                 format: 'yyyy-mm-dd',
             });
 
-    // var table = $('.data-table').DataTable({
-    //     processing: true,
-    //     serverSide: true,
-    //     searching:false,
-    //     "lengthChange": false,
-    //      ajax: "{{ route('allProjects') }}",
-    //     columns: [
-    //         {data: 'project_name', name: 'project_name'},
-    //         {data: 'location', name: 'location'},
-    //         {data: 'options', name: 'options', orderable: false, searchable: false}
-    //     ],
 
-    //     // dom: "lBtipr",
-    //     //     buttons: {
-    //     //     buttons: [
-    //     //         {
-    //     //         text: "Create New",
-    //     //             action: function(e, dt, node, config) {
-    //     //                 $('#modal .modal-title').html('New');
-    //     //                 $('#form')[0].reset();
-    //     //                 $('#form').find('input,small').removeClass('is-invalid').text('');
-    //     //                 $('#form').find('select').removeClass('is-invalid');
-    //     //                 $('#modal').modal('show');
-    //     //             }
-    //     //         }
-    //     //     ],
-    //     //     dom: {
-    //     //         button: {
-    //     //         tag: "button",
-    //     //         className: "btn btn-default group-vertical"
-    //     //         },
-    //     //         buttonLiner: {
-    //     //         tag: null
-    //     //         }
-    //     //     }
-    //     // },
-
-
-
-    //     ],
-    // });
     $('#btnGenerate').click(function(e){
         url="{{ route('getPayslips') }}";
         $('.data-table').DataTable({
@@ -214,4 +172,4 @@
 
 
 </script>
-@endsection
+@endsection --}}
