@@ -24,7 +24,7 @@
                   <div class="mx-auto" style="width: 140px;">
                     <div class="d-flex justify-content-center align-items-center rounded" style="height: 140px; background-color: rgb(233, 236, 239);">
                       {{-- <span style="color: rgb(166, 168, 170); font: bold 8pt Arial;">140x140</span> --}}
-                      <img src="{{ asset('/storage/uploads/' .$crew->employee_no .'/' .$crew->image_path) }}" alt="" id="image_source" name="image_source">
+                      <img src="{{ asset('/storage/uploads/' .$employee->employee_no .'/' .$employee->image_path) }}" alt="" id="image_source" name="image_source">
                       <input type="file" name="image_path" id="image_path" accept="image/*" style="display: none" onchange="document.getElementById('image_source').src = window.URL.createObjectURL(this.files[0])">
 
                     </div>
@@ -47,7 +47,7 @@
                                         <i class="far fa-calendar-alt"></i>
                                     </span>
                                     </div>
-                                    <input type="text" class="form-control date " maxlength="10" id="hire_date" name="hire_date" value="{{ $crew->hire_date ? date('Y-m-d', strtotime($crew->hire_date))  : '' }}">
+                                    <input type="text" class="form-control date " maxlength="10" id="hire_date" name="hire_date" value="{{ $employee->hire_date ? date('Y-m-d', strtotime($employee->hire_date))  : '' }}">
                                 </div>
                                 <small id="hire_date_help" class="text-danger"></small>
                             </div>
@@ -88,31 +88,31 @@
                             </div>
                             <div class="form-group col-md-4">
                                 <label for="first_name">Firstname</label>
-                                <input type="text" class="form-control" id="first_name" name="first_name" value="{{ $crew->first_name }}">
+                                <input type="text" class="form-control" id="first_name" name="first_name" value="{{ $employee->first_name }}">
                                 <small id="first_name_help" class="text-danger"></small>
                             </div>
                             <div class="col-md-4">
                                 <label for="middle_name">Middlename</label>
-                                <input type="text" class="form-control" id="middle_name" name="middle_name" value="{{ $crew->middle_name }}">
+                                <input type="text" class="form-control" id="middle_name" name="middle_name" value="{{ $employee->middle_name }}">
                             </div>
                             <div class="col-md-4">
                                 <label for="last_name">Lastname</label>
-                                <input type="text" class="form-control" id="last_name" name="last_name" value="{{ $crew->last_name }}">
+                                <input type="text" class="form-control" id="last_name" name="last_name" value="{{ $employee->last_name }}">
                                 <small id="last_name_help" class="text-danger"></small>
                             </div>
                             <div class="col-md-12">
                                 <label for="contact_address">Contact Address</label>
-                                <input type="text" name="contact_address" id="contact_address" class="form-control" value="{{ $crew->contact_address }}" >
+                                <input type="text" name="contact_address" id="contact_address" class="form-control" value="{{ $employee->contact_address }}" >
                                 <small id="contact_address_help" class="text-danger"></small>
                             </div>
                             <div class="col-md-6">
                                 <label for="email">Email Address</label>
-                                <input type="text" class="form-control" id="email" name="email" value="{{ $crew->email }}">
+                                <input type="text" class="form-control" id="email" name="email" value="{{ $employee->email }}">
                                 <small id="email_help" class="text-danger"></small>
                             </div>
                             <div class="col-md-6">
                                 <label for="telephone">Telephone</label>
-                                <input type="text" class="form-control" id="telephone" name="telephone" value="{{ $crew->telephone }}">
+                                <input type="text" class="form-control" id="telephone" name="telephone" value="{{ $employee->telephone }}">
                             </div>
                           </div>
 

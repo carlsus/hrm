@@ -9,8 +9,8 @@
           <div class="col-12">
             <form id="form" name="form" enctype="multipart/form-data">
                 @csrf
-                <input type="hidden" name="id" id="id" value="{{ $crew->id }}" class="form-control" >
-                <input type="hidden" name="crew_no" id="crew_no" value="{{ $crew->crew_no }}" class="form-control" >
+                <input type="hidden" name="id" id="id" value="{{ $employee->id }}" class="form-control" >
+                <input type="hidden" name="crew_no" id="crew_no" value="{{ $employee->crew_no }}" class="form-control" >
             <!-- Main content -->
             <div class="invoice p-3 mb-3">
               <!-- title row -->
@@ -116,7 +116,7 @@
                 success:function(data)
                 {
                     toastr.success(
-                        'Crew Information  updated successfully',
+                        'Information  updated successfully',
                         'Update Success',
                         {
                             timeOut: 2000,

@@ -24,6 +24,7 @@ class CreateTimeAttendancesTable extends Migration
             $table->unsignedBigInteger('employee_id')->unsigned();
             $table->foreign('employee_id')->references('id')->on('employees')->onDelete('cascade');
             $table->unsignedBigInteger('payslip_id')->nullable()->unsigned();
+
             $table->timestamps();
         });
     }

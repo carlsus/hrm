@@ -44,8 +44,8 @@ class EmployeeController extends Controller
         $country['data'] = Country::orderby("country","asc")
         			   ->select('id','country')
                        ->get();
-        $crew=new Employee();
-        return view('employees.create',['position' => $position,'country' => $country,'crew' => $crew,'project' => $project]);
+        $employee=new Employee();
+        return view('employees.create',['position' => $position,'country' => $country,'employee' => $employee,'project' => $project]);
     }
 
     /**
@@ -75,24 +75,6 @@ class EmployeeController extends Controller
         $data['employee_no']=$employee_no;
 
         $request->user()->employee()->create($data);
-        // $crew_rank=new CrewRank();
-        // $crew_rank->crew_id=$crew->id;
-        // $crew_rank->rank_id=$request->rank_id;
-        // $crew_rank->save();
-
-
-        // $crew_status=new CrewStatus();
-        // $crew_status->crew_id=$crew->id;
-        // $crew_status->status_id=1;
-        // $crew_status->save();
-        //$crew->crewrank()->save($crew_rank);
-        // $crew_rank=new CrewRank();
-        // $crew_rank->rank_id=$request->rank_id;
-        // $data->crewrank()->associate($crew_rank);
-        // $data->save();
-
-
-
         return response()->json(['success'=>'Data saved successfully.']);
     }
 
@@ -102,20 +84,7 @@ class EmployeeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
 
-        // $employee=$this->crewRepository->getById($id);
-        // $rank['data'] = Position::orderby("position","asc")
-        // 			   ->select('id','position')
-        // 			   ->get();
-        // $country['data'] = Country::orderby("country","asc")
-        // 			   ->select('id','country')
-        // 			   ->get();
-
-        // //dd($crew);
-        // return view('crews.show',['rank' => $rank,'crew' =>$crew, 'country' => $country]);
-    }
 
     /**
      * Show the form for editing the specified resource.
@@ -137,7 +106,7 @@ class EmployeeController extends Controller
                        ->get();
         $employee = Employee::find($id);
 
-        return view('employees.edit',['position' => $position,'country' => $country,'crew' => $employee,'project' => $project]);
+        return view('employees.edit',['position' => $position,'country' => $country,'employee' => $employee,'project' => $project]);
 
     }
 
@@ -163,14 +132,6 @@ class EmployeeController extends Controller
             $update['image_path']=$image_name;
         }
         $update->save();
-
-        // $rank=$this->crewRepository->getById($request->id);
-        // if($rank->rank_id<>$request->rank_id){
-        //     $crew_rank=new CrewRank();
-        //     $crew_rank->crew_id=$request->id;
-        //     $crew_rank->rank_id=$request->rank_id;
-        //     $crew_rank->save();
-        // }
         return response()->json(['success' => 'Data is successfully updated']);
     }
 

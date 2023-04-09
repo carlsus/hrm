@@ -77,6 +77,7 @@ Route::group(['middleware' => ['auth']], function () {
 
 
     Route::resource('payslips', 'PayslipController');
+    Route::get('allPayslips', 'PayslipController@allPayslips' )->name('allPayslips');
     Route::get('getPayslips', 'PayslipController@getPayslips' )->name('getPayslips');
 
 

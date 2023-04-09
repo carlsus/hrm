@@ -76,7 +76,7 @@
 
             </div>
             <div class="modal-footer">
-                <a class="btn btn-secondary" href="{{ route('employees.index',$crew->id) }}">Back</a>
+                <a class="btn btn-secondary" href="{{ route('employees.index',$employee->id) }}">Back</a>
                 <button type="submit" class="btn btn-primary" id="Save">Save</button>
                 </div>
             </form>

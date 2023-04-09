@@ -38,10 +38,13 @@ class DatabaseSeeder extends Seeder
         DB::unprepared(file_get_contents(base_path().'/database/seeds/sql/permissions_group.sql'));
         $this->command->info('Permission Group table seeded!');
 
+
         DB::unprepared(file_get_contents(base_path().'/database/seeds/sql/vw_deduction.sql'));
         $this->command->info('View Deduction');
 
+
         DB::unprepared(file_get_contents(base_path().'/database/seeds/sql/vw_payslip.sql'));
         $this->command->info('Payslip');
+
     }
 }
