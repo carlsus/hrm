@@ -17,8 +17,7 @@ class CreatePayslipsTable extends Migration
             $table->id();
             $table->date('date_start');
             $table->date('date_end');
-            $table->unsignedBigInteger('user_id')->unsigned();
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }

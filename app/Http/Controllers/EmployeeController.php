@@ -22,97 +22,11 @@ class EmployeeController extends Controller
      */
     public function index()
     {
-        return  view('employees.index');
+        $employees=Employee::with('position')->get();
+        return  view('employees.index',compact('employees'));
     }
 
 
-    public function allEmployees(Request $request)
-    {
-        $columns = array(
-            0 =>'employee_no',
-            1 =>'employee_name',
-            1 =>'position',
-            1 =>'employement_status',
-            2 =>'hire_date',
-            3 =>'options'
-        );
-
-        $totalData = Employee::count();
-
-        $totalFiltered = $totalData;
-
-        $limit = $request->input('length');
-        $start = $request->input('start');
-        $order = $columns[$request->input('order.0.column')];
-        $dir = $request->input('order.0.dir');
-
-        if(empty($request->input('search.value')))
-        {
-        $output = Employee::offset($start)
-                ->limit($limit)
-                ->orderBy($order,$dir)
-                ->get();
-        }
-        else {
-        $search = $request->input('search.value');
-
-        $output =  Employee::where('first_name', 'LIKE',"%{$search}%")
-                    ->orWhere('last_name', 'LIKE',"%{$search}%")
-                    ->orWhere('employee_no', 'LIKE',"%{$search}%")
-                    ->orWhere('employment_status', 'LIKE',"%{$search}%")
-                    ->orWhere('hire_date', 'LIKE',"%{$search}%")
-                    ->offset($start)
-                    ->limit($limit)
-                    ->orderBy($order,$dir)
-                    ->get();
-
-        $totalFiltered = Employee::where('first_name', 'LIKE',"%{$search}%")
-                    ->orWhere('last_name', 'LIKE',"%{$search}%")
-                    ->orWhere('employee_no', 'LIKE',"%{$search}%")
-                    //->orWhere('positions.position', 'LIKE',"%{$search}%")
-                    ->orWhere('employment_status', 'LIKE',"%{$search}%")
-                    ->orWhere('hire_date', 'LIKE',"%{$search}%")
-                    ->count();
-        }
-
-        $data = array();
-        if(!empty($output))
-        {
-            foreach ($output as $value)
-            {
-
-
-                $nestedData['employee_no'] = $value->employee_no;
-                $nestedData['employee_name'] = $value->last_name .', ' . $value->first_name;
-                $nestedData['position'] = $value->position->position;
-                $nestedData['employment_status'] = $value->employment_status;
-                $nestedData['hire_date'] = $value->hire_date;
-                $btn='';
-                if (Auth::user()->hasPermissionTo('employee-edit'))
-                {
-                    $btn.= "<a href='".route('employees.edit',$value->id)."' data-toggle='tooltip'  data-id='".$value->id."' title='Show' class='btn btn-default far fa-plus'></a>";
-                }
-                if (Auth::user()->hasPermissionTo('employee-delete'))
-                {
-                    $btn.=  "&nbsp; <a href='javascript:void(0)' data-toggle='tooltip'  data-id='".$value->id."' title='Delete' class='btn btn-danger delete fas fa-trash'></a>";
-
-                }
-                $nestedData['options']=$btn;
-
-                $data[] = $nestedData;
-
-            }
-        }
-
-        $json_data = array(
-            "draw"            => intval($request->input('draw')),
-            "recordsTotal"    => intval($totalData),
-            "recordsFiltered" => intval($totalFiltered),
-            "data"            => $data
-            );
-
-        echo json_encode($json_data);
-    }
     /**
      * Show the form for creating a new resource.
      *

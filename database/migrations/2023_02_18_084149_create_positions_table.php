@@ -20,8 +20,8 @@ class CreatePositionsTable extends Migration
             $table->decimal('regular',9,3);
             $table->unsignedBigInteger('department_id')->unsigned();
             $table->foreign('department_id')->references('id')->on('departments')->onDelete('cascade');
-            $table->unsignedBigInteger('user_id')->unsigned();
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            //$table->unsignedBigInteger('user_id')->unsigned();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }

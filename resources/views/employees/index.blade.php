@@ -12,18 +12,37 @@
           </div>
           <!-- /.card-header -->
           <div class="card-body">
-            <table class="table table-bordered table-hover data-table w-100">
-              <thead>
-              <tr>
-                <th>Employee No</th>
-                <th>Employee Name</th>
-                <th>Position</th>
-                <th>Status</th>
-                <th>Hire Date</th>
-                <th width="80px"></th>
-              </tr>
-              </thead>
+            <table class="table table-bordered table-hover data-table w-100 display">
+                <thead>
+                    <tr>
+                        <th>Employee No</th>
+                        <th>Employee Name</th>
+                        <th>Position</th>
+                        <th>Status</th>
+                        <th>Hire Date</th>
+                        <th width="80px"></th>
+                    </tr>
+                </thead>
               <tbody>
+                @foreach($employees as $employee)
+                    <tr>
+                        <td>{{ $employee->employee_no }}</td>
+                        <td>{{ $employee->last_name . ',' . $employee->first_name }}</td>
+                        <td>{{ $employee->position->position }}</td>
+                        <td>{{ $employee->employment_status }}</td>
+                        <td>{{ date('M-d-Y', strtotime($employee->hire_date)) }}</td>
+                        <td width="80px">
+
+                            @can('employee-edit')
+                                <a href='{{ route('employees.edit',$employee->id) }}' data-toggle='tooltip'  data-id='".$value->id."' title='Edit' class='btn btn-default far fa-edit'></a>
+                            @endcan
+                            @can('employee-delete')
+                                <a href='javascript:void(0)' data-toggle='tooltip'  data-id='{{ $employee->id }}' title='Delete' class='btn btn-danger delete fas fa-trash'></a>
+                            @endcan
+
+                        </td>
+                    </tr>
+                @endforeach
               </tbody>
             </table>
           </div>
@@ -42,65 +61,99 @@
 @section('scripts')
 
 <script type="text/javascript">
-
-    var table;
-    $(document).ready(function(e){
-        $('.data-table tfoot th').each( function (i) {
-        var title = $('.data-table thead th').eq( $(this).index() ).text();
-        $(this).html( '<input type="text" placeholder="'+title+'" data-index="'+i+'" />' );
-    } );
-      table = $('.data-table').DataTable({
-
-            processing: true,
-            serverSide: true,
-            searching:true,
-            "ajax":{
-                     "url": "{{ url('allEmployees') }}",
-                     "dataType": "json",
-                     "type": "POST",
-                     "data":{ _token: "{{csrf_token()}}"}
-                   },
-            "columns": [
-                { "data": "employee_no" },
-                { "data": "employee_name" },
-                { "data": "position" },
-                { "data": "employment_status" },
-                {
-                    'data': 'application+date',
-                    'render': function (data) {
-                        return moment(data).format("DD-MMM-YYYY");
-                    }
-                },
-                { "data": "options" }
-            ],
-            dom: "Bfrtip",
+$(document).ready(function() {
+    $('.data-table thead tr')
+        .clone(true)
+        .addClass('filters')
+        .appendTo('.data-table thead');
+    var table = $('.data-table').DataTable( {
+        searching:true,
+        responsive:true,
+        scrollX: true,
+        dom: "Bfrtip",
             buttons: {
             buttons: [
                 'print',
+                @can('employee-create')
                 {
                     text: "Create New",
                       action: function(e, dt, node, config) {
                           location.href='./employees/create';
                       }
                 }
+                @endcan
+
             ],
 
             dom: {
                 button: {
-                tag: "button",
-                className: "btn btn-default group-vertical"
+                    tag: "button",
+                    className: "btn btn-default group-vertical"
                 },
-                buttonLiner: {
-                tag: null
-                }
+                    buttonLiner: {
+                        tag: null
+                    }
                 }
             },
+            orderCellsTop: true,
+        fixedHeader: true,
+        initComplete: function () {
+            var api = this.api();
 
-        });
+            // For each column
+            api
+                .columns()
+                .eq(0)
+                .each(function (colIdx) {
+                    // Set the header cell to contain the input element
+                    var cell = $('.filters th').eq(
+                        $(api.column(colIdx).header()).index()
+                    );
+                    var title = $(cell).text();
+                    $(cell).html('<input type="text" placeholder="' + title + '" />');
+
+                    // On every keypress in this input
+                    $(
+                        'input',
+                        $('.filters th').eq($(api.column(colIdx).header()).index())
+                    )
+                        .off('keyup change')
+                        .on('change', function (e) {
+                            // Get the search value
+                            $(this).attr('title', $(this).val());
+                            var regexr = '({search})'; //$(this).parents('th').find('select').val();
+
+                            var cursorPosition = this.selectionStart;
+                            // Search the column for that value
+                            api
+                                .column(colIdx)
+                                .search(
+                                    this.value != ''
+                                        ? regexr.replace('{search}', '(((' + this.value + ')))')
+                                        : '',
+                                    this.value != '',
+                                    this.value == ''
+                                )
+                                .draw();
+                        })
+                        .on('keyup', function (e) {
+                            e.stopPropagation();
+
+                            $(this).trigger('change');
+                            $(this)
+                                .focus()[0]
+                                .setSelectionRange(cursorPosition, cursorPosition);
+                        });
+                });
+        },
+
+    });
 
 
-        //delete
-      $('.data-table').on('click', '.delete', function () {
+
+
+
+    $('.data-table').on('click', '.delete', function () {
         var id = $(this).attr('data-id');
         $confirm = confirm("Are You sure want to delete !");
         if($confirm == true ){
@@ -108,7 +161,7 @@
                 type: "DELETE",
                 url: "{{ route('employees.store') }}"+'/'+id,
                 success: function (data) {
-                    table.ajax.reload();
+                    location.reload();
                     toastr.error('Record successfully deleted');
                 },
                 error: function (data) {
@@ -117,6 +170,7 @@
             });
         }
       });
-   });
+});
+
 </script>
 @endsection

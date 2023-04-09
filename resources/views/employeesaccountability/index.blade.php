@@ -21,6 +21,22 @@
               </tr>
               </thead>
               <tbody>
+                @foreach($employeeaccountabilities as $ea)
+                    <tr>
+                        <td>{{ $ea->employee->last_name . ',' . $ea->employee->first_name }}</td>
+                        <td>{{ $ea->accountability->name }}</td>
+                        <td width="80px">
+
+                            @can('employee-accountability-edit')
+                                <a href='{{ route('employees.edit',$ea->id) }}' data-toggle='tooltip'  data-id='".$value->id."' title='Edit' class='btn btn-default far fa-edit'></a>
+                            @endcan
+                            @can('employee-delete')
+                                <a href='javascript:void(0)' data-toggle='tooltip'  data-id='{{ $ea->id }}' title='Delete' class='btn btn-danger delete fas fa-trash'></a>
+                            @endcan
+
+                        </td>
+                    </tr>
+                @endforeach
               </tbody>
             </table>
           </div>
@@ -39,29 +55,25 @@
 @section('scripts')
 
 <script type="text/javascript">
-
-    var table;
-    $(document).ready(function(e){
-        var table = $('.data-table').DataTable({
-        processing: true,
-        serverSide: true,
+$(document).ready(function() {
+    $('.data-table thead tr')
+        .clone(true)
+        .addClass('filters')
+        .appendTo('.data-table thead');
+    var table = $('.data-table').DataTable( {
         searching:true,
-        ajax: "{{ route('employeeAccountability') }}",
-        columns: [
-            {data: 'employee', name: 'employee'},
-            {data: 'item', name: 'item'},
-            {data: 'options', name: 'options', orderable: false, searchable: false}
-        ],
+        responsive:true,
+        scrollX: true,
         dom: "Bfrtip",
             buttons: {
             buttons: [
                 'print',
                 @can('employee-accountability-create')
                 {
-                text: "Create New",
-                    action: function(e, dt, node, config) {
-                        location.href='./employeeaccountability/create';
-                    }
+                    text: "Create New",
+                      action: function(e, dt, node, config) {
+                          location.href='./employeeaccountability/create';
+                      }
                 }
                 @endcan
             ],
@@ -72,19 +84,69 @@
                     className: "btn btn-default group-vertical"
                 },
                     buttonLiner: {
-                    tag: null
+                        tag: null
+                    }
                 }
-            }
-        },
-        columnDefs: [
+            },
+            orderCellsTop: true,
+        fixedHeader: true,
+        initComplete: function () {
+            var api = this.api();
 
-          { width: "10%", targets: 2 }
-        ],
+            // For each column
+            api
+                .columns()
+                .eq(0)
+                .each(function (colIdx) {
+                    // Set the header cell to contain the input element
+                    var cell = $('.filters th').eq(
+                        $(api.column(colIdx).header()).index()
+                    );
+                    var title = $(cell).text();
+                    $(cell).html('<input type="text" placeholder="' + title + '" />');
+
+                    // On every keypress in this input
+                    $(
+                        'input',
+                        $('.filters th').eq($(api.column(colIdx).header()).index())
+                    )
+                        .off('keyup change')
+                        .on('change', function (e) {
+                            // Get the search value
+                            $(this).attr('title', $(this).val());
+                            var regexr = '({search})'; //$(this).parents('th').find('select').val();
+
+                            var cursorPosition = this.selectionStart;
+                            // Search the column for that value
+                            api
+                                .column(colIdx)
+                                .search(
+                                    this.value != ''
+                                        ? regexr.replace('{search}', '(((' + this.value + ')))')
+                                        : '',
+                                    this.value != '',
+                                    this.value == ''
+                                )
+                                .draw();
+                        })
+                        .on('keyup', function (e) {
+                            e.stopPropagation();
+
+                            $(this).trigger('change');
+                            $(this)
+                                .focus()[0]
+                                .setSelectionRange(cursorPosition, cursorPosition);
+                        });
+                });
+        },
+
     });
 
 
-      //delete
-      $('.data-table').on('click', '.delete', function () {
+
+
+
+    $('.data-table').on('click', '.delete', function () {
         var id = $(this).attr('data-id');
         $confirm = confirm("Are You sure want to delete !");
         if($confirm == true ){
@@ -92,7 +154,7 @@
                 type: "DELETE",
                 url: "{{ route('employeeaccountability.store') }}"+'/'+id,
                 success: function (data) {
-                    table.ajax.reload();
+                    location.reload();
                     toastr.error('Record successfully deleted');
                 },
                 error: function (data) {
@@ -101,6 +163,6 @@
             });
         }
       });
-   });
+});
 </script>
 @endsection

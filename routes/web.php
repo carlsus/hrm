@@ -59,7 +59,6 @@ Route::group(['middleware' => ['auth']], function () {
 
 
     Route::resource('employees', 'EmployeeController');
-    Route::post('allEmployees', 'EmployeeController@allEmployees' )->name('allEmployees');
     Route::post('employees/update', 'EmployeeController@update')->name('employees.update');
 
     Route::resource('deductions', 'DeductionController');
@@ -82,7 +81,7 @@ Route::group(['middleware' => ['auth']], function () {
 
 
     Route::resource('employeeaccountability', 'EmployeeAccountabilityController');
-    Route::get('employeeAccountability', 'EmployeeAccountabilityController@allAccountability' )->name('employeeAccountability');
+    // Route::get('employeeAccountability', 'EmployeeAccountabilityController@allAccountability' )->name('employeeAccountability');
 
     Route::resource('cashadvances', 'CashAdvanceController');
     Route::get('allCashAdvances', 'CashAdvanceController@allCashAdvances' )->name('allCashAdvances');

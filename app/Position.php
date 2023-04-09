@@ -13,11 +13,11 @@ class Position extends Model
     }
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Position::class);
     }
 
     public function employee()
     {
-        return $this->hasMany(Employee::class);
+        return $this->hasMany(Position::class);
     }
 }

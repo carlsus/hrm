@@ -88,8 +88,7 @@ class CreateEmployeesTable extends Migration
             $table->unsignedBigInteger('project_id')->nullable()->unsigned();
 
 
-            $table->unsignedBigInteger('position_id')->unsigned();
-            $table->foreign('position_id')->references('id')->on('positions')->onDelete('cascade');
+            $table->foreignId('position_id')->constrained()->cascadeOnDelete();
 
             $table->unsignedBigInteger('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

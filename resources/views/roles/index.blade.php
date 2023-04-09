@@ -14,9 +14,9 @@
           <!-- /.card-header -->
           <div class="card-body">
             <div class="mb-3">
-              {{-- @can('roles-create') --}}
+              @can('role-create')
               <a class="btn btn-success" href="{{ route('roles.create') }}"> Create New Role</a>
-              {{-- @endcan --}}
+              @endcan
             </div>
             @if ($message = Session::get('success'))
             <div class="alert alert-success">
@@ -35,10 +35,10 @@
                 <td>{{ ++$i }}</td>
                 <td>{{ $role->name }}</td>
                 <td>
-                    @can('roles-edit')
+                    @can('role-edit')
                         <a class="btn btn-primary" href="{{ route('roles.edit',$role->id) }}">Edit</a>
                     @endcan
-                    @can('roles-delete')
+                    @can('role-delete')
                         {!! Form::open(['method' => 'DELETE','route' => ['roles.destroy', $role->id],'style'=>'display:inline']) !!}
                             {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
                         {!! Form::close() !!}
