@@ -76,20 +76,22 @@
 
         url="{{ route('getPayslips') }}";
         $('.data-table').DataTable({
-            "destroy": true,
-        processing: true,
-        serverSide: true,
-        searching:false,
-        lengthChange: false,
-        paging:false,
-        "ajax": {
-        type: 'get',
-        url: url,
-        'data': {
-           date_start: $('#date_start').val(),
-           date_end: $('#date_end').val(),
-        }
-    },
+            destroy: true,
+            processing: true,
+            serverSide: true,
+            searching:false,
+            lengthChange: false,
+            Info:false,
+            paging:false,
+
+            "ajax": {
+                type: 'get',
+                url: url,
+                'data': {
+                    date_start: $('#date_start').val(),
+                    date_end: $('#date_end').val(),
+                }
+            },
         columns: [
             {data: 'employee_name', name: 'employee_name'},
             {data: 'deduction', name: 'deduction'},
