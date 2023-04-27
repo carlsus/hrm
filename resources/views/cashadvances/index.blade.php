@@ -17,10 +17,9 @@
               <thead>
               <tr>
                 <th>Employee</th>
-                <th>Date</th>
                 <th>Deduction Date</th>
                 <th>Amount</th>
-                <th>Description</th>
+                <th>Status</th>
                 <th></th>
               </tr>
               </thead>
@@ -44,17 +43,23 @@
 @section('scripts')
 <script type="text/javascript">
   $(function () {
-
+    $('.select2').select2({
+        theme: 'bootstrap4'
+    })
+    $('.date').datepicker({
+                autoclose: true,
+                todayHighlight: true,
+                format: 'yyyy-mm-dd',
+            });
     var table = $('.data-table').DataTable({
         processing: true,
         serverSide: true,
         ajax: "{{ route('allCashAdvances') }}",
         columns: [
             {data: 'employee', name: 'employee'},
-            {data: 'date_created', name: 'date_created'},
             {data: 'deduction_date', name: 'deduction_date'},
             {data: 'amount', name: 'amount'},
-            {data: 'description', name: 'description'},
+            {data: 'status', name: 'status'},
             {data: 'options', name: 'options', orderable: false, searchable: false}
         ],
         dom: "lBtipr",
@@ -63,7 +68,10 @@
                 {
                 text: "Create New",
                     action: function(e, dt, node, config) {
-                        location.href='./cashadvances/create';
+                        $('#modal .modal-title').html('New');
+                        $('#form')[0].reset();
+                        $('#form').find('input, small').removeClass('is-invalid').text('');
+                        $('#modal').modal('show');
                     }
                 }
             ],
@@ -78,10 +86,10 @@
             }
         },
         columnDefs: [
-          { width: "15%", targets: 0 },
           { width: "15%", targets: 1 },
           { width: "15%", targets: 2 },
-          { width: "10%", targets: 5},
+          { width: "15%", targets: 3 },
+          { width: "15%", targets: 4},
         ],
     });
 
@@ -133,7 +141,8 @@
           $('#amount').val(data.amount);
           $('#deduction_date').val(data.deduction_date);
           $('#description').val(data.description);
-          $('#status').val(data.status);
+          $('#status').val(data.status).change();
+          $('#employee_id').val(data.employee_id).change();
 
 
       });

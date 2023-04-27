@@ -19,7 +19,7 @@ class CreateCashAdvancesTable extends Migration
             $table->decimal('amount',9,3);
             $table->date('deduction_date');
             $table->text('description')->nullable();
-            $table->enum('status', ['Pending', 'Decline', 'Approved'])->default('Pending');
+            $table->enum('status', ['Pending', 'Decline', 'Approved','Paid'])->default('Pending');
             $table->unsignedBigInteger('employee_id')->unsigned();
             $table->foreign('employee_id')->references('id')->on('employees')->onDelete('cascade');
             $table->timestamps();

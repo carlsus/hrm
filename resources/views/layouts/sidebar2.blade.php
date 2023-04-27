@@ -24,22 +24,29 @@
             </li>
             <li class="nav-item">
                 <a href="{{ url('./home') }}" class="nav-link">
-                    <i class="nav-icon fas fa-tachometer-alt"></i>
+                    <i class="nav-icon far fa-calendar-times"></i>
                     <p>
                         Time Attendance
                     </p>
                 </a>
             </li>
             <li class="nav-item">
-                <a href="{{ url('./home') }}" class="nav-link">
-                    <i class="nav-icon fas fa-tachometer-alt"></i>
+                <a href="{{ route('payslip') }}" class="nav-link">
+                    <i class="nav-icon fas fa-print"></i>
                     <p>
                         Payslip
                     </p>
                 </a>
             </li>
 
-
+            <li class="nav-item">
+                <a href="{{ route('cashadvance') }}" class="nav-link">
+                    <i class="nav-icon fas fa-money-check"></i>
+                    <p>
+                        Cash Advance
+                    </p>
+                </a>
+            </li>
 
    </ul>
 </li>

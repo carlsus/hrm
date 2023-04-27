@@ -12,7 +12,7 @@
 <body class="hold-transition sidebar-mini layout-fixed text-xs">
 <div class="wrapper">
 
-  @include('layouts.nav')
+  @include('layouts.nav_portal')
 
   @include('layouts.sidebar2')
 

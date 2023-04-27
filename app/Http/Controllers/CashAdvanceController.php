@@ -18,7 +18,7 @@ class CashAdvanceController extends Controller
     public function index()
     {
         $employee['data'] = Employee::orderby("last_name","asc")
-        			   ->select('id','first_name')
+        			   ->select('id','first_name','last_name')
         			   ->get();
 
         return  view('cashadvances.index',['employee' => $employee]);
@@ -28,12 +28,12 @@ class CashAdvanceController extends Controller
     public function allCashAdvances(Request $request)
     {
         $columns = array(
-            0 =>'date_created',
-            1 =>'deduction_date',
-            2 =>'amount',
-            3 =>'status',
-            4 =>'employee_id',
-            5 =>'options'
+
+            0 =>'deduction_date',
+            1 =>'amount',
+            2 =>'status',
+            3 =>'employee_id',
+            4 =>'options'
         );
 
         $totalData = CashAdvance::count();
@@ -79,17 +79,17 @@ class CashAdvanceController extends Controller
                 // $show =  route('crews.show',$value->id);
                 // $edit =  route('crews.edit',$value->id);
 
-                $nestedData['date_created'] = $value->date_created;
+
                 $nestedData['employee'] = $value->employee->last_name .', ' . $value->employee->first_name;
                 $nestedData['deduction_date'] = $value->deduction_date;
                 $nestedData['status'] = $value->status;
-                $nestedData['description'] = $value->description;
+
                 $nestedData['amount'] = $value->amount;
                 $btn='';
                 //if (Auth::user()->hasPermissionTo('crew-management-edit')) //If user has this //permission
                 //{
-                    $btn.= "<a href='".route('employees.edit',$value->id)."' data-toggle='tooltip'  data-id='".$value->id."' title='Show' class='btn btn-default far fa-eye'></a>";
-                //}
+                    $btn.= "<a href='javascript:void(0)' data-toggle='tooltip'  data-id='".$value->id."' title='Edit' class='btn btn-default far fa-edit edit'></a>";
+                    //}
                 //if (Auth::user()->hasPermissionTo('crew-management-delete')) //If user has this //permission
                 //{
                     $btn.=  "&nbsp; <a href='javascript:void(0)' data-toggle='tooltip'  data-id='".$value->id."' title='Delete' class='btn btn-danger delete fas fa-trash'></a>";
@@ -143,19 +143,12 @@ class CashAdvanceController extends Controller
 
     public function edit($id)
     {
-        $position['data'] = Position::orderby("position","asc")
-        			   ->select('id','position')
-        			   ->get();
-        $country['data'] = Country::orderby("country","asc")
-        			   ->select('id','country')
-        			   ->get();
 
-                       $project['data'] = Project::orderby("project_name","asc")
-                       ->select('id','project_name')
-                       ->get();
-        $employee = Employee::find($id);
 
-        return view('employees.edit',['position' => $position,'country' => $country,'crew' => $employee,'project' => $project]);
+        $cashadvance = CashAdvance::find($id);
+
+
+        return response()->json($cashadvance);
 
     }
 
@@ -168,28 +161,9 @@ class CashAdvanceController extends Controller
      */
     public function update(CashAdvanceRequest $request)
     {
-        $update=Employee::find($request->id);
-        $update->fill($request->all());
-        $request['user_id']=auth()->id();
+        CashAdvance::findOrFail($request->id)->update($request->all());
 
-        if ($request->has('image_path')) {
-
-            $destination = 'public/uploads/' . $request->employee_no;
-            $image= $request->file('image_path');
-            $image_name = $image->getClientOriginalName();
-            $path=$request->image_path->storeAs($destination,$image_name);//$image->move($folder);
-            $update['image_path']=$image_name;
-        }
-        $update->save();
-
-        // $rank=$this->crewRepository->getById($request->id);
-        // if($rank->rank_id<>$request->rank_id){
-        //     $crew_rank=new CrewRank();
-        //     $crew_rank->crew_id=$request->id;
-        //     $crew_rank->rank_id=$request->rank_id;
-        //     $crew_rank->save();
-        // }
-        return response()->json(['success' => 'Data is successfully updated']);
+       return response()->json(['success' => 'Data is successfully updated']);
     }
 
     /**

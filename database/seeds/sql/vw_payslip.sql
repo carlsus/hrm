@@ -57,7 +57,7 @@ TIMESTAMPDIFF(MINUTE, in_am, out_am)/60.0 -
 	CASE
 
 			WHEN ( `b`.`employment_status` = 'Probationary' ) THEN
-			`d`.`probationary` ELSE ( `d`.`regular` / 8 )
+			`d`.`probationary`/8 ELSE ( `d`.`regular` / 8 )
 		END
 		) AS `per_hour`
 

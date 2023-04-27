@@ -25,14 +25,17 @@ Auth::routes();
 
 Route::group(['middleware' => 'auth:portal'], function () {
 
-    Route::resource('portal', 'PortalController');
-
+    // Route::resource('portal', 'PortalController');
+    Route::get('portal', 'PortalController@index');
+    Route::get('portal/payslip', 'PortalController@payslip')->name('payslip');
+    Route::get('portal/cashadvance', 'PortalController@cashadvance')->name('cashadvance');
 
     Route::resource('timeattendances', 'TimeAttendanceController');
     Route::get('allTimeAttendances', 'TimeAttendanceController@allTimeAttendances' )->name('allTimeAttendances');
-        Route::get('employeeAttendances', 'TimeAttendanceController@employeeAttendances' )->name('employeeAttendances');
-
-        Route::post('timeattendances/update', 'TimeAttendanceController@update')->name('timeattendances.update');
+    Route::get('employeeAttendances', 'TimeAttendanceController@employeeAttendances' )->name('employeeAttendances');
+    Route::get('myPayslips', 'PortalController@myPayslips' )->name('myPayslips');
+    Route::get('myCashAdvance', 'PortalController@myCashAdvance' )->name('myCashAdvance');
+    Route::post('timeattendances/update', 'TimeAttendanceController@update')->name('timeattendances.update');
 
 });
 

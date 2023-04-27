@@ -138,7 +138,7 @@
           if($confirm == true ){
               $.ajax({
                   type: "DELETE",
-                  url: "{{ route('departments.store') }}"+'/'+id,
+                  url: "{{ route('deductions.store') }}"+'/'+id,
                   success: function (data) {
                       table.draw();
                       toastr.error('Record successfully deleted');

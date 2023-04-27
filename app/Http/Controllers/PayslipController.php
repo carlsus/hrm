@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\CashAdvance;
 use App\Payslip;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -92,28 +93,25 @@ class PayslipController extends Controller
         $results = DB::select( DB::raw("
 
         select
-
-a.employee_id,
-	a.employee_name,
-
-	round(coalesce(a.deduction,0),2) as deduction,
-    round(
-    coalesce(
-    (
-        select sum(e.amount) as advance from cash_advances e
-        where e.employee_id=employee_id and e.deduction_date BETWEEN '$date_start' and '$date_end'
-    ),0),2) as advance,
-	round(sum(a.total)* a.per_hour,2) as Gross,
-	round(sum(a.total)* a.per_hour -coalesce(a.deduction,0)-coalesce((
-		select sum(e.amount) as advance from cash_advances e
-		where e.employee_id=employee_id and e.deduction_date BETWEEN '$date_start' and '$date_end'
-    ),0) ,2) as NetPay
-
- from vw_payslip a
-where a.date_created BETWEEN '$date_start' and '$date_end'
-group by a.employee_id,
-	a.employee_name,a.deduction
-") );
+            a.employee_id,
+	        a.employee_name,
+            round(coalesce(a.deduction,0),2) as deduction,
+            round(
+            coalesce(
+            (
+                select sum(e.amount) as advance from cash_advances e
+                where e.employee_id=employee_id and e.deduction_date BETWEEN '$date_start' and '$date_end' and e.employee_id=a.employee_id
+            ),0),2) as advance,
+	        round(sum(a.total)* a.per_hour,2) as Gross,
+	        round(sum(a.total)* a.per_hour -coalesce(a.deduction,0)-coalesce((
+                select sum(e.amount) as advance from cash_advances e
+                where e.employee_id=a.employee_id and e.deduction_date BETWEEN '$date_start' and '$date_end'
+            ),0) ,2) as NetPay
+        from vw_payslip a
+        where a.date_created BETWEEN '$date_start' and '$date_end'
+            group by a.employee_id,
+	        a.employee_name,a.deduction
+        ") );
         //Post::orderBy('id', 'DESC')->get();
         $data = array();
         if(!empty($results))
@@ -164,6 +162,7 @@ group by a.employee_id,
         $id=$request->user()->payslip()->create($request->all())->id;
 
         TimeAttendance::whereBetween('date_created',[$request->date_start,$request->date_end])->update(['payslip_id'=>$id]);
+        CashAdvance::whereBetween('deduction_date',[$request->date_start,$request->date_end])->update(['status'=>'Paid']);
         return response()->json(['success'=>'Data saved successfully.']);
     }
 
