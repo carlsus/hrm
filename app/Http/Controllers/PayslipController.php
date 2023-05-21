@@ -95,6 +95,7 @@ class PayslipController extends Controller
         select
             a.employee_id,
 	        a.employee_name,
+
             round(coalesce(a.deduction,0),2) as deduction,
             round(
             coalesce(
