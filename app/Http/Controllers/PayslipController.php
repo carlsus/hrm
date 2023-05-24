@@ -101,12 +101,12 @@ class PayslipController extends Controller
             coalesce(
             (
                 select sum(e.amount) as advance from cash_advances e
-                where e.employee_id=employee_id and e.deduction_date BETWEEN '$date_start' and '$date_end' and e.employee_id=a.employee_id
+                where e.employee_id=employee_id and e.deduction_date BETWEEN '$date_start' and '$date_end' and e.employee_id=employee_id
             ),0),2) as advance,
 	        round(sum(a.total)* a.per_hour,2) as Gross,
 	        round(sum(a.total)* a.per_hour -coalesce(a.deduction,0)-coalesce((
                 select sum(e.amount) as advance from cash_advances e
-                where e.employee_id=a.employee_id and e.deduction_date BETWEEN '$date_start' and '$date_end'
+                where e.employee_id=employee_id and e.deduction_date BETWEEN '$date_start' and '$date_end'
             ),0) ,2) as NetPay
         from vw_payslip a
         where a.date_created BETWEEN '$date_start' and '$date_end'
