@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Payslip;
+use App\Payroll;
 use Illuminate\Http\Request;
 
-class PayslipController extends Controller
+class PayrollController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -41,10 +41,10 @@ class PayslipController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Payslip  $payslip
+     * @param  \App\Payroll  $payroll
      * @return \Illuminate\Http\Response
      */
-    public function show(Payslip $payslip)
+    public function show(Payroll $payroll)
     {
         //
     }
@@ -52,10 +52,10 @@ class PayslipController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Payslip  $payslip
+     * @param  \App\Payroll  $payroll
      * @return \Illuminate\Http\Response
      */
-    public function edit(Payslip $payslip)
+    public function edit(Payroll $payroll)
     {
         //
     }
@@ -64,10 +64,10 @@ class PayslipController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Payslip  $payslip
+     * @param  \App\Payroll  $payroll
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Payslip $payslip)
+    public function update(Request $request, Payroll $payroll)
     {
         //
     }
@@ -75,10 +75,10 @@ class PayslipController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Payslip  $payslip
+     * @param  \App\Payroll  $payroll
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Payslip $payslip)
+    public function destroy(Payroll $payroll)
     {
         //
     }
